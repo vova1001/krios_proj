@@ -26,3 +26,22 @@ func DBinit(cfgDB *c.ConfigDB) (*sql.DB, error) {
 
 	return db, nil
 }
+
+func Migrate(db *sql.DB) error {
+	_, err := db.Exec(`CREATE TABLE IF NOT EXISTS objects(
+		id SERIAL PRIMARY KEY,
+		article TEXT UNIQUE NOT NULL,
+		name TEXT NOT NULL,
+		photo TEXT,
+		price DECIMAL(10,2) NOT NULL,
+		parametrs_name TEXT,
+		characteristics JSONB NOT NULL DEFAULT '{}',
+	)`)
+
+	if err != nil {
+		return fmt.Errorf("migration failed: %w", err)
+	}
+
+	log.Println("Migration completed")
+	return nil
+}

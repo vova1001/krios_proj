@@ -24,6 +24,7 @@ func main() {
 	}
 
 	internal.NewRepository(db)
+	d.Migrate(db)
 
 	mux := http.DefaultServeMux
 
